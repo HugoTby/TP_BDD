@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Connexion</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+  </head>
+  <style>
+    .container {
+  width: 50%;
+  margin: 0 auto;
+  text-align: left;
+  padding: 30px;
+  border: 1px solid lightgray;
+  box-sizing: border-box;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  border: 1px solid lightgray;
+  font-size: 16px;
+}
+
+input[type="submit"] {
+  width: 100%;
+  padding: 10px;
+  background-color: lightblue;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+  </style>
+  <body>
+    <div class="container">
+      <h1>Connexion</h1>
+      <form>
+        <div class="form-group">
+          <label for="username">Nom d'utilisateur</label>
+          <input type="text" id="username" name="username">
+        </div>
+        <div class="form-group">
+          <label for="password">Mot de passe</label>
+          <input type="password" id="password" name="password">
+        </div>
+        <input type="submit" value="Connexion">
+      </form>
+    </div>
+  </body>
+</html>
