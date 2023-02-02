@@ -14,7 +14,7 @@ if(isset($_POST['submit'])) {
 
                 // Connexion à la base de données //
     //////////////////////////////////////////////////////////////////
-    $host = "localhost";                              // Adresse IP //
+    $host = "192.168.65.92";                          // Adresse IP //
     $username = "root";                               // Username   //
     $password = "root";                               // Password   //
     $dbname = "td_bdd";                               // Nom base   //
@@ -47,26 +47,18 @@ if(isset($_POST['submit'])) {
         } elseif($role == "Parent") {
 
             
-            parent($username, $conn);
+            //eleve($username, $conn);
+
+            eleve($username, $conn);
 
         } else {
-            echo "Votre rôle n'est pas reconnu.
             
-            <form action='index.php' method='post'>
-            <input type='submit' name='retour' value='Retour'>
-            </form>
-            ";
-            //formulaire();
+            formulaire($messageERR = 2);
         }
     } else {
         // Affichage d'un message d'erreur si les informations de connexion sont incorrectes
-        //formulaire();
-        echo 'erreur
+        formulaire($messageERR = 1);
         
-        <form action="index.php" method="post">
-        <input type="submit" name="retour" value="Retour">
-        </form>
-        ';
         
         
         
@@ -76,14 +68,21 @@ if(isset($_POST['submit'])) {
     // Détruit la session en cours lorsque l'utilisateur clique sur le bouton de déconnexion
     session_destroy();
     echo '<body bgcolor="grey">
-    Vous avez été déconnecté.
-    <form action="index.php" method="post">
-    <input type="submit" name="retour" value="Retour">
-    </form>
-    </body>';
+    <div style="display: table; height: 100vh; width: 100%;">
+      <div style="display: table-cell; vertical-align: middle; text-align: center;">
+        <div style="display: inline-block;">Vous avez été déconnecté.</div>
+        <form action="index.php" method="post" style="display: inline-block;">
+          <input type="submit" name="retour" value="Retour" style="margin-left: 10px;">
+        </form>
+      </div>
+    </div>
+  </body>
+  
+  
+  ';
     
 } else {
-    formulaire();
+    formulaire($messageERR = 0);
 }
 ?>
 

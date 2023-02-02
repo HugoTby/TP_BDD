@@ -1,6 +1,6 @@
 <?php
 
-function formulaire()
+function formulaire($messageERR)
 {
 // Formulaire de connexion
 echo '
@@ -12,42 +12,17 @@ echo '
     <link rel="stylesheet" type="text/css" href="style.css">
   </head>
   <style>
-    .container {
-  width: 50%;
-  margin: 0 auto;
-  text-align: left;
-  padding: 30px;
-  border: 1px solid lightgray;
-  box-sizing: border-box;
-}
+  .erreur{text-align: center;font-size: 8px;background-color : lightblue;border: double 1px;border-color: lightblue;padding-left: 1em;padding-right: 1em;margin-top: 2em;border: 5px solid red;animation: blinker 1s linear infinite;}
+  @keyframes blinker {50% {border-color: transparent;}}
+.container {width: 50%;margin: 0 auto;text-align: left;padding: 30px;border: 1px solid lightgray;box-sizing: border-box;}
+.form-group {margin-bottom: 20px;}
+label {display: block;font-weight: bold;margin-bottom: 10px;}
+input[type="text"],input[type="password"] {width: 100%;padding: 10px;box-sizing: border-box;border: 1px solid lightgray;font-size: 16px;}
+input[type="submit"] {width: 100%;padding: 10px;background-color: lightblue;color: white;border: none;cursor: pointer;}
 
-.form-group {
-  margin-bottom: 20px;
-}
+.dropdown-content{color:black;}
+.dark-mode {background-color: #131516;color: white;}
 
-label {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-input[type="text"],
-input[type="password"] {
-  width: 100%;
-  padding: 10px;
-  box-sizing: border-box;
-  border: 1px solid lightgray;
-  font-size: 16px;
-}
-
-input[type="submit"] {
-  width: 100%;
-  padding: 10px;
-  background-color: lightblue;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
 
   </style>
   <body>
@@ -64,7 +39,38 @@ input[type="submit"] {
         </div>
         <input type="submit" name="submit" value="Connexion">
       </form>
+      ';
+        
+        if ($messageERR == 1) {
+        echo '<div class="erreur"> <p><h1 style="color:black">Le nom d&apos;utilisateur ou le mot de passe est incorrect<br>(Erreur BDD-29012302-IDMPUS)<h1></p></div>'; 
+        }
+        if ($messageERR == 2) {
+            echo '<div class="erreur"> <p><h1 style="color:black">Impossible d&apos;acceder &agrave; la ressource voulue !<br>(Erreur BDDC-29012301-ID *PERMISSION DENIED*)<h1></p></div>'; 
+        }
+        
+echo'
     </div>
+    <script>
+  const toggleDarkModeButton = document.getElementById("toggleDarkMode");
+
+  // Vérifie l état initial du bouton en fonction de la valeur enregistrée dans localStorage
+  const initialDarkModeEnabled = localStorage.getItem("darkModeEnabled") === "true";
+  if (initialDarkModeEnabled) {
+    document.body.classList.add("dark-mode");
+    toggleDarkModeButton.innerText = "Désactiver le mode sombre";
+  } else {
+    document.body.classList.remove("dark-mode");
+    toggleDarkModeButton.innerText = "Activer le mode sombre";
+  }
+
+  // Ajoute un écouteur d événements pour changer l état du bouton et enregistrer le choix de l utilisateur
+  toggleDarkModeButton.addEventListener("click", function() {
+    document.body.classList.toggle("dark-mode");
+    const darkModeEnabled = document.body.classList.contains("dark-mode");
+    localStorage.setItem("darkModeEnabled", darkModeEnabled);
+    toggleDarkModeButton.innerText = darkModeEnabled ? "Désactiver le mode sombre" : "Activer le mode sombre";
+  });
+</script>
   </body>
 </html>
 ';
@@ -80,23 +86,101 @@ input[type="submit"] {
 
 
 
-function eleve()
+function eleve($username, $conn)
 {	
-    echo "test de la fonction eleve";
-    echo '<form action="" method="post">';
-    echo '<input type="submit" name="logout" value="Déconnexion">';
-    echo '</form>';
+    
+
+    echo '
+    
+    <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Ajout de devoirs</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+  </head>
+  <style>
+
+    table {width: 100%;border-collapse: collapse;}
+    th,td{border: 1px solid lightgray;padding: 10px;text-align: left;}
+    th{background-color: lightgray;font-weight: bold;}
+    .container {width: 50%;margin: 0 auto;text-align: left;padding: 30px;border: 1px solid lightgray;box-sizing: border-box;}
+    .profile {position: absolute;top: 10px;left: 10px;display: flex;align-items: center;}
+    .profile img {width: 50px;height: 50px;border-radius: 25px;margin-right: 10px;}
+    .profile .dropdown {position: relative;display: inline-block;}
+    .dark-mode {background-color: #131516;color: white;}
+    .dropdown-content{color:black;}
+    .profile .dropdown .dropdown-content {display: none;position: absolute;top: calc(100% + 0px);left: 0;background-color: white;box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);padding: 20px;min-width: 150px;}
+    .profile .dropdown:hover .dropdown-content {display: block;}
+  </style>
+  <body>
+    
+      '.image_grade($username, $conn).'
+      
+    </div>
+    <div class="container">
+    <h1>Liste des devoirs</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Matière</th>
+          <th>Devoir</th>
+          <th>A faire pour le:</th>
+          <th>Donné le :</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Renseignez les champs de requêtes SQL ici -->
+        <tr>
+          <td>Mathématiques</td>
+          <td>Résoudre des équations</td>
+          <td>2023-02-15</td>
+          <td>2023-02-15</td>
+        </tr>
+        <tr>
+          <td>Histoire</td>
+          <td>Rédiger un exposé sur la Révolution française</td>
+          <td>2023-03-01</td>
+          <td>2023-03-01</td>
+        </tr>
+        <tr>
+          <td>Anglais</td>
+          <td>Lire et résumér un texte en anglais</td>
+          <td>2023-02-28</td>
+          <td>2023-02-28</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <script>
+  const toggleDarkModeButton = document.getElementById("toggleDarkMode");
+
+  // Vérifie l état initial du bouton en fonction de la valeur enregistrée dans localStorage
+  const initialDarkModeEnabled = localStorage.getItem("darkModeEnabled") === "true";
+  if (initialDarkModeEnabled) {
+    document.body.classList.add("dark-mode");
+    toggleDarkModeButton.innerText = "Désactiver le mode sombre";
+  } else {
+    document.body.classList.remove("dark-mode");
+    toggleDarkModeButton.innerText = "Activer le mode sombre";
+  }
+
+  // Ajoute un écouteur d événements pour changer l état du bouton et enregistrer le choix de l utilisateur
+  toggleDarkModeButton.addEventListener("click", function() {
+    document.body.classList.toggle("dark-mode");
+    const darkModeEnabled = document.body.classList.contains("dark-mode");
+    localStorage.setItem("darkModeEnabled", darkModeEnabled);
+    toggleDarkModeButton.innerText = darkModeEnabled ? "Désactiver le mode sombre" : "Activer le mode sombre";
+  });
+</script>
+  </body>
+</html>
+    
+    ';
 
 }
 
-function parent()
-{	
-    echo "test de la fonction parent";
-    echo '<form action="" method="post">';
-    echo '<input type="submit" name="logout" value="Déconnexion">';
-    echo '</form>';
 
-}
 
 
 
@@ -114,7 +198,39 @@ function image_grade($username, $conn)
             while($row = mysqli_fetch_assoc($result)) {
             $grade = $row["role"];
             $img_grade = $row["img_grade"];
-            echo "<div class='profile'><img src='".$img_grade."' alt='Grade Image' />";
+            echo '
+              <div class="profile"><img src="'.$img_grade.'" alt="Grade Image" />
+                <div class="dropdown">
+                  <p>Mon compte</p>
+                    <div class="dropdown-content">
+                    <p><button>Paramètres du compte</button></p>
+                    <p><button id="toggleDarkMode"><span class="toggle__icon"></span>Paramètres de couleur</button></p>
+                    <p>Vous etes connecté en tant que <strong>'.$grade.'</strong> </p>
+                    <p><form action="" method="post"><input type="submit" name="logout" value="Déconnexion"></form></p>
+                </div>
+              </div>
+              <script>
+                        const toggleDarkModeButton = document.getElementById("toggleDarkMode");
+
+                        // Vérifie l état initial du bouton en fonction de la valeur enregistrée dans localStorage
+                        const initialDarkModeEnabled = localStorage.getItem("darkModeEnabled") === "true";
+                        if (initialDarkModeEnabled) {
+                          document.body.classList.add("dark-mode");
+                          toggleDarkModeButton.innerText = "Désactiver le mode sombre";
+                        } else {
+                          document.body.classList.remove("dark-mode");
+                          toggleDarkModeButton.innerText = "Activer le mode sombre";
+                        }
+
+                        // Ajoute un écouteur d événements pour changer l état du bouton et enregistrer le choix de l utilisateur
+                        toggleDarkModeButton.addEventListener("click", function() {
+                          document.body.classList.toggle("dark-mode");
+                          const darkModeEnabled = document.body.classList.contains("dark-mode");
+                          localStorage.setItem("darkModeEnabled", darkModeEnabled);
+                          toggleDarkModeButton.innerText = darkModeEnabled ? "Désactiver le mode sombre" : "Activer le mode sombre";
+                        });
+
+              </script>';
                 }
             } else {
             echo "0 results";
@@ -165,87 +281,23 @@ function panel($username, $conn)
     <link rel="stylesheet" type="text/css" href="style.css">
   </head>
   <style>
-    .container {
-      width: 50%;
-      margin: 0 auto;
-      text-align: left;
-      padding: 30px;
-      border: 1px solid lightgray;
-      box-sizing: border-box;
-    }
+    .container {width: 50%;margin: 0 auto;text-align: left;padding: 30px;border: 1px solid lightgray;box-sizing: border-box;}
+    .dark-mode {background-color: #131516;color: white;}
+    label {display: block;margin-bottom: 10px;font-weight: bold;}
+    input[type="text"],select,input[type="date"] {padding: 10px;font-size: 16px;width: 100%;box-sizing: border-box;margin-bottom: 20px;}
+    input[type="submit"] {padding: 10px 20px;font-size: 16px;background-color: lightblue;border: none;color: white;cursor: pointer;}
+    .profile {position: absolute;top: 10px;left: 10px;display: flex;align-items: center;}
+    .profile img {width: 50px;height: 50px;border-radius: 25px;margin-right: 10px;}
+    .profile .dropdown {position: relative;display: inline-block;}
+    .dropdown-content{color:black;}
+    .profile .dropdown .dropdown-content {display: none;position: absolute;top: calc(100% + 0px);left: 0;background-color: white;box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);padding: 20px;min-width: 150px;}
+    .profile .dropdown:hover .dropdown-content {display: block;}
 
-    label {
-      display: block;
-      margin-bottom: 10px;
-      font-weight: bold;
-    }
-
-    input[type="text"],
-    select,
-    input[type="date"] {
-      padding: 10px;
-      font-size: 16px;
-      width: 100%;
-      box-sizing: border-box;
-      margin-bottom: 20px;
-    }
-
-    input[type="submit"] {
-      padding: 10px 20px;
-      font-size: 16px;
-      background-color: lightblue;
-      border: none;
-      color: white;
-      cursor: pointer;
-    }
-
-    .profile {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      display: flex;
-      align-items: center;
-    }
-
-    .profile img {
-      width: 50px;
-      height: 50px;
-      border-radius: 25px;
-      margin-right: 10px;
-    }
-
-    .profile .dropdown {
-      position: relative;
-      display: inline-block;
-    }
-
-    .profile .dropdown .dropdown-content {
-      display: none;
-      position: absolute;
-      top: calc(100% + 0px);
-      left: 0;
-      background-color: white;
-      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-      padding: 20px;
-      min-width: 150px;
-    }
-
-    .profile .dropdown:hover .dropdown-content {
-      display: block;
-    }
   </style>
   <body>
     
       '.image_grade($username, $conn).'
-      <div class="dropdown">
-        <p>Mon compte</p>
-        <div class="dropdown-content">
-          <p><a href="https://www.google.com/">Paramètres du compte</a></p>
-          <p><a href="https://www.google.com/">Paramètres de couleur</a></p>
-          <p>Vous etes connecté en tant que </p>
-          <p><form action="" method="post"><input type="submit" name="logout" value="Déconnexion"></form></p>
-        </div>
-      </div>
+
     </div>
     <div class="container">
       <h1>Ajout de devoirs</h1>
@@ -273,9 +325,5 @@ function panel($username, $conn)
     
     ';
 }
-
-
-
-
 
 ?>
