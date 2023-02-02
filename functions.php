@@ -86,8 +86,13 @@ echo'
 
 
 
+
 function eleve($username, $conn)
 {	
+  $sql = "SELECT Matiere, contenu, dateRendu, dateEmission, titre FROM devoirs";
+  $result = mysqli_query($conn, $sql);
+
+  if (mysqli_num_rows($result) > 0) {
     
 
     echo '
@@ -101,57 +106,60 @@ function eleve($username, $conn)
   </head>
   <style>
 
-    table {width: 100%;border-collapse: collapse;}
-    th,td{border: 1px solid lightgray;padding: 10px;text-align: left;}
-    th{background-color: lightgray;font-weight: bold;}
-    .container {width: 50%;margin: 0 auto;text-align: left;padding: 30px;border: 1px solid lightgray;box-sizing: border-box;}
-    .profile {position: absolute;top: 10px;left: 10px;display: flex;align-items: center;}
-    .profile img {width: 50px;height: 50px;border-radius: 25px;margin-right: 10px;}
-    .profile .dropdown {position: relative;display: inline-block;}
-    .dark-mode {background-color: #131516;color: white;}
-    .dropdown-content{color:black;}
-    .profile .dropdown .dropdown-content {display: none;position: absolute;top: calc(100% + 0px);left: 0;background-color: white;box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);padding: 20px;min-width: 150px;}
-    .profile .dropdown:hover .dropdown-content {display: block;}
+            table {width: 100%;border-collapse: collapse;}
+            th,td{border: 1px solid lightgray;padding: 10px;text-align: left;}
+            th{background-color: lightgray;font-weight: bold;}
+            .container {width: 50%;margin: 0 auto;text-align: left;padding: 30px;border: 1px solid lightgray;box-sizing: border-box;}
+            .profile {position: absolute;top: 10px;left: 10px;display: flex;align-items: center;}
+            .profile img {width: 50px;height: 50px;border-radius: 25px;margin-right: 10px;}
+            .profile .dropdown {position: relative;display: inline-block;}
+            .dark-mode {background-color: #131516;color: white;}
+            .dropdown-content{color:black;}
+            .profile .dropdown .dropdown-content {display: none;position: absolute;top: calc(100% + 0px);left: 0;background-color: white;box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);padding: 20px;min-width: 150px;}
+            .profile .dropdown:hover .dropdown-content {display: block;}
   </style>
-  <body>
-    
-      '.image_grade($username, $conn).'
+          <body>
+          '.image_grade($username, $conn).'
       
     </div>
-    <div class="container">
-    <h1>Liste des devoirs</h1>
-    <table>
-      <thead>
-        <tr>
-          <th>Matière</th>
-          <th>Devoir</th>
-          <th>A faire pour le:</th>
-          <th>Donné le :</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Renseignez les champs de requêtes SQL ici -->
-        <tr>
-          <td>Mathématiques</td>
-          <td>Résoudre des équations</td>
-          <td>2023-02-15</td>
-          <td>2023-02-15</td>
-        </tr>
-        <tr>
-          <td>Histoire</td>
-          <td>Rédiger un exposé sur la Révolution française</td>
-          <td>2023-03-01</td>
-          <td>2023-03-01</td>
-        </tr>
-        <tr>
-          <td>Anglais</td>
-          <td>Lire et résumér un texte en anglais</td>
-          <td>2023-02-28</td>
-          <td>2023-02-28</td>
-        </tr>
-      </tbody>
-    </table>
-    </div>
+          
+            <div class="container">
+              <h1>Liste des devoirs</h1>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Matière</th>
+                      <th>Titre</th>
+                      <th>Devoir</th>
+                      <th>A faire pour le:</th>
+                      <th>Donné le :</th>
+                    </tr>
+                  </thead>
+          ';
+
+          while($row = mysqli_fetch_assoc($result)) {
+            $matiere = $row["Matiere"];
+            $contenu = $row["contenu"];
+            $rendu = $row["dateRendu"];
+            $emission = $row["dateEmission"];
+            $titre = $row["titre"];
+
+              echo"
+            <tbody>
+              <tr>
+                <td> ". $matiere ." </td>
+                <td> ". $titre." </td>
+                <td>".  $contenu ." </td>
+                <td>".  $rendu ." </td>
+                <td>".  $emission." </td>
+              </tr>
+            </tbody>";
+            }
+
+            echo '
+      
+          </table>
+      </div>
     <script>
   const toggleDarkModeButton = document.getElementById("toggleDarkMode");
 
@@ -175,6 +183,7 @@ function eleve($username, $conn)
 </script>
   </body>
 </html>
+
     
     ';
 
@@ -182,8 +191,7 @@ function eleve($username, $conn)
 
 
 
-
-
+}
 
 
 //---------------------------------------------------------------------------------------------------------------------------------//
