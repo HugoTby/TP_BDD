@@ -25,6 +25,7 @@ if(isset($_POST['submit'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
     
+    
     // Vérification des informations de connexion dans la BDD
     $query = "SELECT * FROM users WHERE username='$username' AND password='$password'";
     $result = mysqli_query($conn, $query);
@@ -34,17 +35,21 @@ if(isset($_POST['submit'])) {
     if(mysqli_num_rows($result) > 0) {
         // Récupération du rôle de l'utilisateur
         $role = $row['role'];
+        $_SESSION["Login"]  = $username ;
+        $_SESSION["Password"]  = $password ;
+        $_SESSION["Isconnect"] = true;
         
         // Affichage du texte en fonction du rôle de l'utilisateur
-        if($role == "Professeur") {
+        if($role == "Professeur" and $_SESSION["Isconnect"] == true) {
 
             panel($username, $conn);
+            //header('Location: ajout.php');
 
-        } elseif($role == "Élève") {
+        } elseif($role == "Élève" and $_SESSION["Isconnect"] == true) {
             
             eleve($username, $conn);
 
-        } elseif($role == "Parent") {
+        } elseif($role == "Parent" and $_SESSION["Isconnect"] == true) {
 
             
             //eleve($username, $conn);
@@ -66,22 +71,23 @@ if(isset($_POST['submit'])) {
 
 } elseif(isset($_POST['logout'])) {
     // Détruit la session en cours lorsque l'utilisateur clique sur le bouton de déconnexion
+    session_unset();
     session_destroy();
-    echo '<body bgcolor="grey">
-    <div style="display: table; height: 100vh; width: 100%;">
-      <div style="display: table-cell; vertical-align: middle; text-align: center;">
-        <div style="display: inline-block;">Vous avez été déconnecté.</div>
-        <form action="index.php" method="post" style="display: inline-block;">
-          <input type="submit" name="retour" value="Retour" style="margin-left: 10px;">
-        </form>
-      </div>
-    </div>
-  </body>
-  
-  
-  ';
+    ?>
+    <body bgcolor="grey">
+        <div style="display: table; height: 100vh; width: 100%;">
+            <div style="display: table-cell; vertical-align: middle; text-align: center;">
+                <div style="display: inline-block;">Vous avez été déconnecté.</div>
+                <form action="index.php" method="post" style="display: inline-block;">
+                <input type="submit" name="retour" value="Retour" style="margin-left: 10px;">
+                </form>
+            </div>
+        </div>
+    </body>
+<?php
     
-} else {
+}
+else {
     formulaire($messageERR = 0);
 }
 ?>
