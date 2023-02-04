@@ -12,19 +12,21 @@ session_start();
 
 if(isset($_POST['submit'])) {
 
-                // Connexion à la base de données //
     //////////////////////////////////////////////////////////////////
-    $host = "192.168.65.92";                          // Adresse IP //
-    $username = "root";                               // Username   //
-    $password = "root";                               // Password   //
-    $dbname = "td_bdd";                               // Nom base   //
+    //////////////// Connexion à la base de données //////////////////
+    //////////////////////////////////////////////////////////////////
+    $host =                "localhost";               // Adresse IP //
+    $username =            "root";                    // Username   //
+    $password =            "root";                    // Password   //
+    $dbname =              "td_bdd";                  // Nom base   //
+    //////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////
     $conn = mysqli_connect($host, $username, $password, $dbname);
     
     // Récupération des données du formulaire
     $username = $_POST['username'];
     $password = $_POST['password'];
-    
     
     // Vérification des informations de connexion dans la BDD
     $query = "SELECT * FROM users WHERE username='$username' AND password='$password'";
@@ -35,26 +37,231 @@ if(isset($_POST['submit'])) {
     if(mysqli_num_rows($result) > 0) {
         // Récupération du rôle de l'utilisateur
         $role = $row['role'];
-        $_SESSION["Login"]  = $username ;
-        $_SESSION["Password"]  = $password ;
-        $_SESSION["Isconnect"] = true;
+
+        // Enregistrement de la session de l'utilisateur
+        $_SESSION['logged_in'] = true;
+        $_SESSION['username'] = $username;
+        $_SESSION['role'] = $role;
         
         // Affichage du texte en fonction du rôle de l'utilisateur
-        if($role == "Professeur" and $_SESSION["Isconnect"] == true) {
+        if($role == "Professeur") {
 
-            panel($username, $conn);
-            //header('Location: ajout.php');
+            header('Location: index2.php');
 
-        } elseif($role == "Élève" and $_SESSION["Isconnect"] == true) {
+            //panel($username, $conn);
+
+
+        } elseif($role == "Élève") {
             
-            eleve($username, $conn);
+            //eleve($username, $conn);
 
-        } elseif($role == "Parent" and $_SESSION["Isconnect"] == true) {
+            $sql = "SELECT Matiere, contenu, dateRendu, dateEmission, titre FROM devoirs";
+            $result = mysqli_query($conn, $sql);
+
+            if (mysqli_num_rows($result) > 0) {
+
+                echo'
+
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Ajout de devoirs</title>
+                    <link rel="stylesheet" type="text/css" href="style.css">
+                </head>
+                <style>
+
+                            table {width: 100%;border-collapse: collapse;}
+                            th,td{border: 1px solid lightgray;padding: 10px;text-align: left;}
+                            th{background-color: lightgray;font-weight: bold;}
+                            .container {width: 50%;margin: 0 auto;text-align: left;padding: 30px;border: 1px solid lightgray;box-sizing: border-box;}
+                            .profile {position: absolute;top: 10px;left: 10px;display: flex;align-items: center;}
+                            .profile img {width: 50px;height: 50px;border-radius: 25px;margin-right: 10px;}
+                            .profile .dropdown {position: relative;display: inline-block;}
+                            .dark-mode {background-color: #131516;color: white;}
+                            .dropdown-content{color:black;}
+                            .profile .dropdown .dropdown-content {display: none;position: absolute;top: calc(100% + 0px);left: 0;background-color: white;box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);padding: 20px;min-width: 150px;}
+                            .profile .dropdown:hover .dropdown-content {display: block;}
+                </style>
+                        <body>
+                        '.image_grade($username, $conn).'
+                    
+                    </div>
+                        
+                            <div class="container">
+                            <h1>Liste des devoirs</h1>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Matière</th>
+                                            <th>Titre</th>
+                                            <th>Devoir</th>
+                                            <th>A faire pour le:</th>
+                                            <th>Donné le :</th>
+                                        </tr>
+                                    </thead>
+                        
+                    ';
+                    
+                            while($row = mysqli_fetch_assoc($result)) {
+                            $matiere = $row["Matiere"];
+                            $contenu = $row["contenu"];
+                            $rendu = $row["dateRendu"];
+                            $emission = $row["dateEmission"];
+                            $titre = $row["titre"];
+
+                            echo'
+                            
+                            <tbody>
+                                <tr>
+                                    <td>'. $matiere .' </td>
+                                    <td>'. $titre .' </td>
+                                    <td>'. $contenu .' </td>
+                                    <td>'.  $rendu .' </td>
+                                    <td>'. $emission .' </td>
+                                </tr>
+                            </tbody>
+                            ';
+                        } 
+                            
+                            
+                            echo'
+                    
+                        </table>
+                    </div>
+                        <script>
+                            const toggleDarkModeButton = document.getElementById("toggleDarkMode");
+
+                            // Vérifie l état initial du bouton en fonction de la valeur enregistrée dans localStorage
+                            const initialDarkModeEnabled = localStorage.getItem("darkModeEnabled") === "true";
+                            if (initialDarkModeEnabled) {
+                                document.body.classList.add("dark-mode");
+                                toggleDarkModeButton.innerText = "Désactiver le mode sombre";
+                            } else {
+                                document.body.classList.remove("dark-mode");
+                                toggleDarkModeButton.innerText = "Activer le mode sombre";
+                            }
+
+                            // Ajoute un écouteur d événements pour changer l état du bouton et enregistrer le choix de l utilisateur
+                            toggleDarkModeButton.addEventListener("click", function() {
+                                document.body.classList.toggle("dark-mode");
+                                const darkModeEnabled = document.body.classList.contains("dark-mode");
+                                localStorage.setItem("darkModeEnabled", darkModeEnabled);
+                                toggleDarkModeButton.innerText = darkModeEnabled ? "Désactiver le mode sombre" : "Activer le mode sombre";
+                            });
+                        </script>
+                    </body>
+                </html>
+                ';
+            
+            }
+
+
+        } elseif($role == "Parent") {
 
             
             //eleve($username, $conn);
 
-            eleve($username, $conn);
+            $sql = "SELECT Matiere, contenu, dateRendu, dateEmission, titre FROM devoirs";
+            $result = mysqli_query($conn, $sql);
+
+            if (mysqli_num_rows($result) > 0) {
+
+                echo'
+
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Ajout de devoirs</title>
+                    <link rel="stylesheet" type="text/css" href="style.css">
+                </head>
+                <style>
+
+                            table {width: 100%;border-collapse: collapse;}
+                            th,td{border: 1px solid lightgray;padding: 10px;text-align: left;}
+                            th{background-color: lightgray;font-weight: bold;}
+                            .container {width: 50%;margin: 0 auto;text-align: left;padding: 30px;border: 1px solid lightgray;box-sizing: border-box;}
+                            .profile {position: absolute;top: 10px;left: 10px;display: flex;align-items: center;}
+                            .profile img {width: 50px;height: 50px;border-radius: 25px;margin-right: 10px;}
+                            .profile .dropdown {position: relative;display: inline-block;}
+                            .dark-mode {background-color: #131516;color: white;}
+                            .dropdown-content{color:black;}
+                            .profile .dropdown .dropdown-content {display: none;position: absolute;top: calc(100% + 0px);left: 0;background-color: white;box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);padding: 20px;min-width: 150px;}
+                            .profile .dropdown:hover .dropdown-content {display: block;}
+                </style>
+                        <body>
+                        '.image_grade($username, $conn).'
+                    
+                    </div>
+                        
+                            <div class="container">
+                            <h1>Liste des devoirs</h1>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Matière</th>
+                                            <th>Titre</th>
+                                            <th>Devoir</th>
+                                            <th>A faire pour le:</th>
+                                            <th>Donné le :</th>
+                                        </tr>
+                                    </thead>
+                        
+                    ';
+                    
+                            while($row = mysqli_fetch_assoc($result)) {
+                            $matiere = $row["Matiere"];
+                            $contenu = $row["contenu"];
+                            $rendu = $row["dateRendu"];
+                            $emission = $row["dateEmission"];
+                            $titre = $row["titre"];
+
+                            echo'
+                            
+                            <tbody>
+                                <tr>
+                                    <td>'. $matiere .' </td>
+                                    <td>'. $titre .' </td>
+                                    <td>'. $contenu .' </td>
+                                    <td>'.  $rendu .' </td>
+                                    <td>'. $emission .' </td>
+                                </tr>
+                            </tbody>
+                            ';
+                        } 
+                            
+                            
+                            echo'
+                    
+                        </table>
+                    </div>
+                        <script>
+                            const toggleDarkModeButton = document.getElementById("toggleDarkMode");
+
+                            // Vérifie l état initial du bouton en fonction de la valeur enregistrée dans localStorage
+                            const initialDarkModeEnabled = localStorage.getItem("darkModeEnabled") === "true";
+                            if (initialDarkModeEnabled) {
+                                document.body.classList.add("dark-mode");
+                                toggleDarkModeButton.innerText = "Désactiver le mode sombre";
+                            } else {
+                                document.body.classList.remove("dark-mode");
+                                toggleDarkModeButton.innerText = "Activer le mode sombre";
+                            }
+
+                            // Ajoute un écouteur d événements pour changer l état du bouton et enregistrer le choix de l utilisateur
+                            toggleDarkModeButton.addEventListener("click", function() {
+                                document.body.classList.toggle("dark-mode");
+                                const darkModeEnabled = document.body.classList.contains("dark-mode");
+                                localStorage.setItem("darkModeEnabled", darkModeEnabled);
+                                toggleDarkModeButton.innerText = darkModeEnabled ? "Désactiver le mode sombre" : "Activer le mode sombre";
+                            });
+                        </script>
+                    </body>
+                </html>
+                ';
+            
+            }
 
         } else {
             
@@ -87,9 +294,18 @@ if(isset($_POST['submit'])) {
 <?php
     
 }
+
+
+
+
 else {
     formulaire($messageERR = 0);
+
 }
+
+
+
+
 ?>
 
 

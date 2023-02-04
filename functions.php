@@ -153,7 +153,7 @@ function eleve($username, $conn)
                 <td><?php  $rendu ?> </td>
                 <td><?php  $emission ?> </td>
               </tr>
-            </tbody>";
+            </tbody>
             <?php
             } ?>
       
@@ -218,7 +218,6 @@ function image_grade($username, $conn)
               </div>
               <script>
                         const toggleDarkModeButton = document.getElementById("toggleDarkMode");
-
                         // Vérifie l état initial du bouton en fonction de la valeur enregistrée dans localStorage
                         const initialDarkModeEnabled = localStorage.getItem("darkModeEnabled") === "true";
                         if (initialDarkModeEnabled) {
@@ -228,7 +227,6 @@ function image_grade($username, $conn)
                           document.body.classList.remove("dark-mode");
                           toggleDarkModeButton.innerText = "Activer le mode sombre";
                         }
-
                         // Ajoute un écouteur d événements pour changer l état du bouton et enregistrer le choix de l utilisateur
                         toggleDarkModeButton.addEventListener("click", function() {
                           document.body.classList.toggle("dark-mode");
@@ -236,7 +234,6 @@ function image_grade($username, $conn)
                           localStorage.setItem("darkModeEnabled", darkModeEnabled);
                           toggleDarkModeButton.innerText = darkModeEnabled ? "Désactiver le mode sombre" : "Activer le mode sombre";
                         });
-
               </script> ';
                 }
             } else {
