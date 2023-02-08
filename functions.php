@@ -10,46 +10,74 @@ function formulaire($messageERR)
     <meta charset="UTF-8">
     <title>Connexion</title>
     <link rel="stylesheet" type="text/css" href="style.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="fonts/icomoon/style.css">
+
+<link rel="stylesheet" href="css/owl.carousel.min.css">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="css/bootstrap.min.css">
+
+<!-- Style -->
+<link rel="stylesheet" href="css/style.css">
   </head>
   <style>
-  .erreur{text-align: center;font-size: 8px;background-color : lightblue;border: double 1px;border-color: lightblue;padding-left: 1em;padding-right: 1em;margin-top: 2em;border: 5px solid red;animation: blinker 1s linear infinite;}
-  @keyframes blinker {50% {border-color: transparent;}}
-.container {width: 50%;margin: 0 auto;text-align: left;padding: 30px;border: 1px solid lightgray;box-sizing: border-box;}
-.form-group {margin-bottom: 20px;}
-label {display: block;font-weight: bold;margin-bottom: 10px;}
-input[type="text"],input[type="password"] {width: 100%;padding: 10px;box-sizing: border-box;border: 1px solid lightgray;font-size: 16px;}
-input[type="submit"] {width: 100%;padding: 10px;background-color: lightblue;color: white;border: none;cursor: pointer;}
-
-.dropdown-content{color:black;}
-.dark-mode {background-color: #131516;color: white;}
-
-
+    .erreur{text-align: center;font-size: 8px;background-color : lightblue;border: double 1px;border-color: lightblue;padding-left: 1em;padding-right: 1em;margin-top: 2em;border: 5px solid red;animation: blinker 1s linear infinite;}
+    @keyframes blinker {50% {border-color: transparent;}}
+    .dark-mode {background-color: #131516;color: white;}
   </style>
   <body>
+  <div class="d-lg-flex half">
+    <div class="bg order-1 order-md-2" style="background-image: url('images/logo.png');"></div>
+    <div class="contents order-2 order-md-1">
     <div class="container">
-      <h1>Connexion</h1>
-      <form method="post">
-        <div class="form-group">
-          <label for="username">Nom d utilisateur</label>
-          <input type="text" id="username"  name="username">
-        </div>
-        <div class="form-group">
-          <label for="password">Mot de passe</label>
-          <input type="password" id="password"  name="password">
-        </div>
-        <input type="submit" name="submit" value="Connexion">
-      </form>
-     <?php
+    <div class="row align-items-center justify-content-center">
+          <div class="col-md-7" style="padding: 30px;border: 1px solid lightgray;box-sizing: border-box;background-color:#f5f5f5;">
+            <h3>Se connecter a <strong>Pronote2wish</strong></h3>
+            <p class="mb-4">PRONOTE est un logiciel de gestion de la scolarité pour les établissements d'enseignement. Il permet de gérer les notes, les absences, les devoirs, les bulletins, les informations sur les élèves et les enseignants, avec une interface conviviale et une communication en temps réel.</p>
+            <form method="post">
+              <div class="form-group first">
+                <label for="username">Nom d'utilisateur</label>
+                <input type="text" class="form-control" name="username" placeholder="Saisissez votre nom d'utilisateur" id="username">
+              </div>
+              <div class="form-group last mb-3">
+                <label for="password">Mot de passe</label>
+                <input type="password" class="form-control" name="password" placeholder="Saisissez votre mot de passe" id="password">
+              </div>
+              
+              <div class="d-flex mb-5 align-items-center">
+                
+                <span class="ml-auto"><a href="#" class="forgot-pass" id="myButton">Mot de passe oublié ?</a></span> 
+              </div>
+
+              <input type="submit" name="submit" value="Connexion" class="btn btn-block btn-primary">
+
+            </form>
+<?php
         
         if ($messageERR == 1) {
-        echo '<div class="erreur"> <p><h1 style="color:black">Le nom d&apos;utilisateur ou le mot de passe est incorrect<br>(Erreur BDD-29012302-IDMPUS)<h1></p></div>'; 
+        echo '<div class="btn-primary" style="border-radius: 0.25rem;background-color: red;"> <p><h1 style="color:white;font-size:15px;border:15px;text-align:center; padding:12px;">Le nom d&apos;utilisateur ou le mot de passe est incorrect<br>(Erreur BDD-29012302-IDMPUS)<h1></p></div>'; 
         }
         if ($messageERR == 2) {
-            echo '<div class="erreur"> <p><h1 style="color:black">Impossible d&apos;acceder &agrave; la ressource voulue !<br>(Erreur BDDC-29012301-ID *PERMISSION DENIED*)<h1></p></div>'; 
+            echo '<div class="btn-primary" style="border-radius: 0.25rem;background-color: red;" > <p><h1 style="color:white;font-size:15px;border:15px;text-align:center; padding:12px;">Impossible d&apos;acceder &agrave; la ressource voulue !<br>(Erreur BDDC-29012301-ID *PERMISSION DENIED*)<h1></p></div>'; 
         }
         
 ?>
     </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    document.getElementById("myButton").addEventListener("click", function() {
+      alert("Et bah cheh tu peux pas le récup XD");
+    });
+  </script>
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
     <script>
   const toggleDarkModeButton = document.getElementById("toggleDarkMode");
 
@@ -82,115 +110,6 @@ input[type="submit"] {width: 100%;padding: 10px;background-color: lightblue;colo
 
 //---------------------------------------------------------------------------------------------------------------------------------//
 
-
-
-
-
-
-function eleve($username, $conn)
-{	
-  $sql = "SELECT Matiere, contenu, dateRendu, dateEmission, titre FROM devoirs";
-  $result = mysqli_query($conn, $sql);
-
-  if (mysqli_num_rows($result) > 0) {
-    
-
-   ?>
-    
-    <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Ajout de devoirs</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
-  </head>
-  <style>
-
-            table {width: 100%;border-collapse: collapse;}
-            th,td{border: 1px solid lightgray;padding: 10px;text-align: left;}
-            th{background-color: lightgray;font-weight: bold;}
-            .container {width: 50%;margin: 0 auto;text-align: left;padding: 30px;border: 1px solid lightgray;box-sizing: border-box;}
-            .profile {position: absolute;top: 10px;left: 10px;display: flex;align-items: center;}
-            .profile img {width: 50px;height: 50px;border-radius: 25px;margin-right: 10px;}
-            .profile .dropdown {position: relative;display: inline-block;}
-            .dark-mode {background-color: #131516;color: white;}
-            .dropdown-content{color:black;}
-            .profile .dropdown .dropdown-content {display: none;position: absolute;top: calc(100% + 0px);left: 0;background-color: white;box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);padding: 20px;min-width: 150px;}
-            .profile .dropdown:hover .dropdown-content {display: block;}
-  </style>
-          <body>
-          <?php image_grade($username, $conn)?>
-      
-    </div>
-          
-            <div class="container">
-              <h1>Liste des devoirs</h1>
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Matière</th>
-                      <th>Titre</th>
-                      <th>Devoir</th>
-                      <th>A faire pour le:</th>
-                      <th>Donné le :</th>
-                    </tr>
-                  </thead>
-          <?php
-
-          while($row = mysqli_fetch_assoc($result)) {
-            $matiere = $row["Matiere"];
-            $contenu = $row["contenu"];
-            $rendu = $row["dateRendu"];
-            $emission = $row["dateEmission"];
-            $titre = $row["titre"];
-
-              ?>
-            <tbody>
-              <tr>
-                <td><?php $matiere ?> </td>
-                <td> <?php $titre?> </td>
-                <td><?php $contenu ?> </td>
-                <td><?php  $rendu ?> </td>
-                <td><?php  $emission ?> </td>
-              </tr>
-            </tbody>
-            <?php
-            } ?>
-      
-          </table>
-      </div>
-    <script>
-  const toggleDarkModeButton = document.getElementById("toggleDarkMode");
-
-  // Vérifie l état initial du bouton en fonction de la valeur enregistrée dans localStorage
-  const initialDarkModeEnabled = localStorage.getItem("darkModeEnabled") === "true";
-  if (initialDarkModeEnabled) {
-    document.body.classList.add("dark-mode");
-    toggleDarkModeButton.innerText = "Désactiver le mode sombre";
-  } else {
-    document.body.classList.remove("dark-mode");
-    toggleDarkModeButton.innerText = "Activer le mode sombre";
-  }
-
-  // Ajoute un écouteur d événements pour changer l état du bouton et enregistrer le choix de l utilisateur
-  toggleDarkModeButton.addEventListener("click", function() {
-    document.body.classList.toggle("dark-mode");
-    const darkModeEnabled = document.body.classList.contains("dark-mode");
-    localStorage.setItem("darkModeEnabled", darkModeEnabled);
-    toggleDarkModeButton.innerText = darkModeEnabled ? "Désactiver le mode sombre" : "Activer le mode sombre";
-  });
-</script>
-  </body>
-</html>
-
-    
- <?php
-
-}
-
-
-
-}
 
 
 //---------------------------------------------------------------------------------------------------------------------------------//
@@ -248,98 +167,9 @@ function image_grade($username, $conn)
 
 
 
-
-function settings()
-{
-    $link = "https://www.example.com";
-    header("Location: $link");
-    exit;
-}
-
-function infos()
-{
-    $link = "https://www.example.com";
-    header("Location: $link");
-    exit;
-}
-
-//fonctions a faire
-
-
-
 //---------------------------------------------------------------------------------------------------------------------------------//
 
 
 
-
-
-function panel($username, $conn)
-{
-
-
-  
-
-
-      ?>
-      <!DOCTYPE html>
-  <html>
-    <head>
-      <meta charset="UTF-8">
-      <title>Ajout de devoirs</title>
-      <link rel="stylesheet" type="text/css" href="style.css">
-    </head>
-    <style>
-      .container {width: 50%;margin: 0 auto;text-align: left;padding: 30px;border: 1px solid lightgray;box-sizing: border-box;}
-      .dark-mode {background-color: #131516;color: white;}
-      label {display: block;margin-bottom: 10px;font-weight: bold;}
-      input[type="text"],select,input[type="date"] {padding: 10px;font-size: 16px;width: 100%;box-sizing: border-box;margin-bottom: 20px;}
-      input[type="submit"] {padding: 10px 20px;font-size: 16px;background-color: lightblue;border: none;color: white;cursor: pointer;}
-      .profile {position: absolute;top: 10px;left: 10px;display: flex;align-items: center;}
-      .profile img {width: 50px;height: 50px;border-radius: 25px;margin-right: 10px;}
-      .profile .dropdown {position: relative;display: inline-block;}
-      .dropdown-content{color:black;}
-      .profile .dropdown .dropdown-content {display: none;position: absolute;top: calc(100% + 0px);left: 0;background-color: white;box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);padding: 20px;min-width: 150px;}
-      .profile .dropdown:hover .dropdown-content {display: block;}
-
-    </style>
-    <body>
-      
-        <?php image_grade($username, $conn) ?>
-
-
-
-      </div>
-      <div class="container">
-        <h1>Ajout de devoirs</h1>
-        <form action="" method="post">
-          <label for="subject">Matière :</label>
-          <select id="subject" name="subject">
-            <option value="Mathématiques">Mathématiques</option>
-            <option value="Physique-appliquée">Physique-appliquée</option>
-            <option value="Anglais">Anglais</option>
-            <option value="Informatique & réseaux">Informatique & réseaux</option>
-            <option value="Culture générale">Culture générale</option>
-          </select>
-            <label for="title">Titre :</label>
-          <input type="text" id="title" name="title">
-            <label for="task">Devoir :</label>
-          <input type="text" id="task" name="task">
-            <label for="due_date">A faire pour le:</label>
-          <input type="date" id="due_date" name="due_date">
-            <label for="due_date">Donné le :</label>
-          <input type="date" id="due_date" name="dur_date">
-
-          <input type="submit" name="envoi" value="Confirmer">
-        </form>
-      </div>
-    </body>
-  </html>
-
-
-  <?php
-
-          
-            
-}
 
 ?>

@@ -15,7 +15,7 @@ if(isset($_POST['submit'])) {
     //////////////////////////////////////////////////////////////////
     //////////////// Connexion à la base de données //////////////////
     //////////////////////////////////////////////////////////////////
-    $host =                "localhost";               // Adresse IP //
+    $host =                "192.168.65.92";           // Adresse IP //
     $username =            "root";                    // Username   //
     $password =            "root";                    // Password   //
     $dbname =              "td_bdd";                  // Nom base   //
@@ -72,9 +72,10 @@ if(isset($_POST['submit'])) {
                 <style>
 
                             table {width: 100%;border-collapse: collapse;}
-                            th,td{border: 1px solid lightgray;padding: 10px;text-align: left;}
-                            th{background-color: lightgray;font-weight: bold;}
+                            th,td{border: 1px solid grey;padding: 10px;text-align: left;}
+                            th{background-color: grey;font-weight: bold;}
                             .container {width: 50%;margin: 0 auto;text-align: left;padding: 30px;border: 1px solid lightgray;box-sizing: border-box;}
+                            .container2 {width: 50%;margin: 0 auto;padding: 30px;border: 1px solid lightgray;box-sizing: border-box;margin-top: 10%;text-align:center;}
                             .profile {position: absolute;top: 10px;left: 10px;display: flex;align-items: center;}
                             .profile img {width: 50px;height: 50px;border-radius: 25px;margin-right: 10px;}
                             .profile .dropdown {position: relative;display: inline-block;}
@@ -86,6 +87,9 @@ if(isset($_POST['submit'])) {
                         <body>
                         '.image_grade($username, $conn).'
                     
+                    </div>
+                    <div class="container2">
+                    <h1>Bienvenue dans votre espace élève !</h1>
                     </div>
                         
                             <div class="container">
@@ -179,9 +183,10 @@ if(isset($_POST['submit'])) {
                 <style>
 
                             table {width: 100%;border-collapse: collapse;}
-                            th,td{border: 1px solid lightgray;padding: 10px;text-align: left;}
-                            th{background-color: lightgray;font-weight: bold;}
+                            th,td{border: 1px solid grey;padding: 10px;text-align: left;}
+                            th{background-color: grey;font-weight: bold;}
                             .container {width: 50%;margin: 0 auto;text-align: left;padding: 30px;border: 1px solid lightgray;box-sizing: border-box;}
+                            .container2 {width: 50%;margin: 0 auto;padding: 30px;border: 1px solid lightgray;box-sizing: border-box;margin-top: 10%;text-align:center;}
                             .profile {position: absolute;top: 10px;left: 10px;display: flex;align-items: center;}
                             .profile img {width: 50px;height: 50px;border-radius: 25px;margin-right: 10px;}
                             .profile .dropdown {position: relative;display: inline-block;}
@@ -194,7 +199,10 @@ if(isset($_POST['submit'])) {
                         '.image_grade($username, $conn).'
                     
                     </div>
-                        
+                    <div class="container2">
+                    <h1>Bienvenue dans votre espace parent !</h1>
+                    </div>
+                     
                             <div class="container">
                             <h1>Liste des devoirs</h1>
                                 <table>
@@ -300,6 +308,7 @@ if(isset($_POST['submit'])) {
 
 else {
     formulaire($messageERR = 0);
+    //header('Location: connexion/index.php');
 
 }
 
